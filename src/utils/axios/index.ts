@@ -10,9 +10,9 @@ import { setupResponseInterceptors } from './response-interceptors'
  */
 
 const http = axios.create({
-  baseURL: import.meta.env.VITE_API_PREFIX_URL,
+  baseURL: import.meta.env.VITE_API_PREFIX_URL || '/api',
 })
-console.log('当前接口地址:', import.meta.env.VITE_API_PREFIX_URL)
+console.log('当前接口地址:', import.meta.env.VITE_API_PREFIX_URL || '/api')
 
 /**
  * 请求前的拦截器
