@@ -13,6 +13,7 @@
     "build:test": "vite build --mode test",
     "build:online": "vite build --mode production",
     "preview": "vite preview",
+    "preview:test": "vite preview --mode test",
     "lint": "eslint --cache --cache-location=node_modules/.cache/.eslint-cache",
     "lint:fix": "pnpm run lint --fix",
     "test:@pro/router": "pnpm --filter @pro/router run test",

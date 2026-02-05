@@ -76,6 +76,8 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
+      outDir: 'dist',
+      assetsDir: 'assets',
       rollupOptions: {
         output: {
           manualChunks: {
@@ -90,6 +92,8 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
+      sourcemap: false,
+      chunkSizeWarningLimit: 1000,
     },
     css: {
       transformer: 'lightningcss',
@@ -108,6 +112,12 @@ export default defineConfig(({ mode }) => {
           rewrite: path => path.replace(/^\/mj-api/, ''),
         },
       },
+    },
+    // 生产环境配置
+    define: {
+      __DEV__: mode === 'development',
+      'import.meta.env.VITE_API_PREFIX_URL': JSON.stringify(process.env.VITE_API_PREFIX_URL || 'https://www.xtkp.top/api'),
+      'import.meta.env.VITE_APP_TITLE': JSON.stringify(process.env.VITE_APP_TITLE || '小兔快跑'),
     },
   }
 })

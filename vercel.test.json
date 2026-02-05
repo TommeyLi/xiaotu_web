@@ -12,7 +12,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "https://www.xtkp.top/api/$1"
+      "dest": "https://xiaotu-test.pinstyles.cn/api/$1"
     },
     {
       "src": "/assets/(.*)",
@@ -43,5 +43,8 @@
         }
       ]
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "test"
+  }
 }
