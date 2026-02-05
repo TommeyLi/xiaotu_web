@@ -1,0 +1,108 @@
+.common-runner-config: &common-runner-config
+  - runner:
+      tags: cnb:arch:amd64
+      cpus: 4
+
+
+.common-pipeline-config: &common-pipeline-config
+  - <<: *common-runner-config
+  - docker:
+      image: node:24.3-alpine
+      volumes:
+        - /root/.npm:copy-on-write
+        - node_modules:copy-on-write
+  - services:
+      - docker
+  - name: "pipline -> docker build and push image"
+    imports: 
+      # 引用 cnb secret 文件
+      - https://cnb.cool/cd-huamao/secret/-/blob/main/cnb/env.yml
+
+# 匹配 dev 或 develop 分支
+"(dev|develop)":
+  push:
+    - <<: *common-pipeline-config
+      stages:
+        - name: "Stage -> Project build"
+          jobs:
+          - name: "stage job -> pnpm build"
+            script: |
+              npm config set registry https://registry.npmmirror.com
+              npm install -g pnpm
+              pnpm install
+              pnpm build:test
+
+        - name: "Stage -> Build and push image"
+          jobs:
+            - name: job -> docker login
+              script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
+
+            - name: job -> docker build
+              script: docker build -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT} .
+
+            - name: job -> push image
+              script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT}
+
+  
+        - name: "Stage -> deploy to tke"
+          jobs:
+            - name: job -> develop 使用 tke 插件更新镜像
+              image: tencentcom/deploy-to-tke
+              settingsFrom: https://cnb.cool/cd-huamao/secret/-/blob/main/tke/env.yml
+              settings:
+                region: ap-nanjing
+                cluster_id: cls-imxncc1i
+                # 以下配置需根据实际情况修改
+                namespace: pin-style-test
+                workload_kind: deployment
+                workload_name: xiaotu-web-test
+                container_names: xiaotu-web-test
+                container_images: ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_COMMIT}
+
+
+# 兜底匹配所有未被 glob 匹配的分支、tag
+$:
+  tag_push:
+    - <<: *common-pipeline-config
+      stages:
+        - name: "Stage -> Project build"
+          jobs:
+          - name: "stage job -> pnpm build"
+            script: |
+              npm config set registry https://mirrors.cloud.tencent.com/npm/
+              npm install -g pnpm
+              pnpm install
+              pnpm build:online
+
+        - name: "Stage -> build and push image"
+          jobs:
+            - name: job -> docker login
+              script: docker login -u ${CNB_TOKEN_USER_NAME} -p "${CNB_TOKEN}" ${CNB_DOCKER_REGISTRY}
+
+            # CNB_BRANCH 对于由 tag_push 触发的构建，值为 tag 名
+            - name: job -> docker build tag
+              script: docker build -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_BRANCH} .
+
+            - name: job -> docker push tag
+              script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_BRANCH}
+
+            - name: job -> docker build latest
+              script: docker build -t ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest .
+
+            - name: job -> docker push latest
+              script: docker push ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:latest
+
+        - name: "Stage -> deploy to tke"
+          jobs:
+            - name: job -> develop 使用 tke 插件更新镜像
+              image: tencentcom/deploy-to-tke
+              settingsFrom: https://cnb.cool/cd-huamao/secret/-/blob/main/tke/env.yml
+              settings:
+                region: ap-nanjing
+                cluster_id: cls-imxncc1i
+                # 以下配置需根据实际情况修改
+                namespace: pinstyle
+                workload_kind: deployment
+                workload_name: xiaotu-web
+                container_names: xiaotu-web
+                container_images: ${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}:${CNB_BRANCH}

@@ -1,0 +1,17 @@
+/* 阿里巴巴数黑体 Bold */
+@font-face {
+  font-family: 'AlimamaShuHeiTi';
+  src: url('./AlimamaShuHeiTi-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* DIN Condensed Bold */
+@font-face {
+  font-family: 'DIN Condensed';
+  src: url('./din-condensed-bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

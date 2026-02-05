@@ -1,0 +1,13 @@
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="photo-shield" clip-path="url(#clip0_1115_7737)">
+<path id="Vector" d="M17.5 9.33331H17.5117" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M13.416 23.3334H8.16602C7.23776 23.3334 6.34752 22.9646 5.69114 22.3082C5.03476 21.6518 4.66602 20.7616 4.66602 19.8334V8.16669C4.66602 7.23843 5.03476 6.34819 5.69114 5.69181C6.34752 5.03544 7.23776 4.66669 8.16602 4.66669H19.8327C20.7609 4.66669 21.6512 5.03544 22.3076 5.69181C22.9639 6.34819 23.3327 7.23843 23.3327 8.16669V12.8334" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M4.66602 17.5L9.33268 12.8333C10.4153 11.7915 11.75 11.7915 12.8327 12.8333L14.5827 14.5833" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M25.6667 18.6667C25.6667 23.3334 22.75 25.6667 21.5833 25.6667C20.4167 25.6667 17.5 23.3334 17.5 18.6667C18.6667 18.6667 20.4167 18.0834 21.5833 16.9167C22.75 18.0834 24.5 18.6667 25.6667 18.6667Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_1115_7737">
+<rect width="28" height="28" fill="white"/>
+</clipPath>
+</defs>
+</svg>
