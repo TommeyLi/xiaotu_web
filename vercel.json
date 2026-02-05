@@ -4,5 +4,13 @@
       "source": "/api/(.*)",
       "destination": "https://www.xtp.top/api/$1"
     }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    }
   ]
 }
