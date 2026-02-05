@@ -1,4 +1,4 @@
-import path from 'node:path'
+import path from 'node:path' 
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { ProNaiveUIResolver } from 'pro-naive-ui-resolver'
